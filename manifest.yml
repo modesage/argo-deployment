@@ -1,0 +1,61 @@
+# nginx Pod
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  containers:
+    - name: nginx
+      image: nginx:stable-alpine-perl
+      ports:
+        - containerPort: 80
+
+---
+
+# httpd Pod
+apiVersion: v1
+kind: Pod
+metadata:
+  name: httpd
+  labels:
+    app: httpd
+spec:
+  containers:
+    - name: httpd
+      image: httpd:alpine
+      ports:
+        - containerPort: 80
+
+---
+
+# nginx Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-svc
+spec:
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 70
+      targetPort: 80
+  type: ClusterIP
+
+---
+
+# httpd Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpd-svc
+spec:
+  selector:
+    app: httpd
+  ports:
+    - protocol: TCP
+      port: 71
+      targetPort: 80
+  type: ClusterIP
