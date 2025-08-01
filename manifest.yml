@@ -1,61 +1,37 @@
-# nginx Pod
-apiVersion: v1
-kind: Pod
+# next-app Deployment
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: nginx
+  name: next-app
   labels:
-    app: nginx
+    app: next-app
 spec:
-  containers:
-    - name: nginx
-      image: nginx:stable-alpine-perl
-      ports:
-        - containerPort: 80
+  replicas: 1
+  selector:
+    matchLabels:
+      app: next-app
+  template:
+    metadata:
+      labels:
+        app: next-app
+    spec:
+      containers:
+        - name: next-app
+          image: modesage/todo-app-argo:8d98593804c078d542cdb6d2e5c2c4b73365222a
+          ports:
+            - containerPort: 3000
 
 ---
-
-# httpd Pod
-apiVersion: v1
-kind: Pod
-metadata:
-  name: httpd
-  labels:
-    app: httpd
-spec:
-  containers:
-    - name: httpd
-      image: httpd:alpine
-      ports:
-        - containerPort: 80
-
----
-
-# nginx Service
+# next-app Service
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx-svc
+  name: next-app-svc
 spec:
   selector:
-    app: nginx
+    app: next-app
   ports:
     - protocol: TCP
-      port: 70
-      targetPort: 80
-  type: ClusterIP
-
----
-
-# httpd Service
-apiVersion: v1
-kind: Service
-metadata:
-  name: httpd-svc
-spec:
-  selector:
-    app: httpd
-  ports:
-    - protocol: TCP
-      port: 71
-      targetPort: 80
+      port: 3000
+      targetPort: 3000
   type: ClusterIP
