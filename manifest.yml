@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: next-app
-          image: modesage/todo-app-argo:e7824848644777a73d20cf7dc381304c5dd7f8e0
+          image: modesage/todo-app-argo:f32ae82a1afa0b29fa258df40e088cbdbbb3a804
           ports:
             - containerPort: 3000
 
